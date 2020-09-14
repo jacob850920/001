@@ -22,5 +22,12 @@ def quadratic(a,b,c):
             x1=(-b+math.sqrt(d))/(2*a)
             x2=(-b-math.sqrt(d))/(2*a)
             return x1,x2
-#依照題目打入a,b,c
-print(quadratic(1,2,1))
+        
+a=input('請輸入a')
+b=input('請輸入b')
+c=input('請輸入c')
+a=int(a)
+b=int(b)
+c=int(c)
+
+print(quadratic(a,b,c))
