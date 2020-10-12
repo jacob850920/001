@@ -71,12 +71,12 @@ s='I love you and you love him and who loves who'
 a=s.split(' ')
 print(a)
 ###########################################################
-print(set(s))
-keys=(set(s))
+print(set(a))
+keys=(set(a))
 values=[0 for i in keys]
 dictionary={keys:values for keys, values in zip(keys,values)}
 print(dictionary)
-for i in s:
+for i in a:
     dictionary[i]+=1
 print(dictionary)
 #############################################################
