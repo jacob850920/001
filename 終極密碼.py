@@ -1,24 +1,32 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Oct 26 08:42:17 2020
+Created on Mon Oct 26 09:45:28 2020
 
 @author: cis-user
 """
 
-from random import randint
-min= 1
-max= 100
-answer = randint(min,max)
-while True:
-    guess = input('密碼介於 ' + str(min) + '-' + str(max) + ':\n>>')
-    guess = int(guess)
-    if guess <= min or guess >= max:
-        print('請輸入 ' + str(min) + '-' + str(max) + ' 之間的整數\n')
-        continue
-    if guess == answer:
-        print('答對了！')
-        break   
-    elif guess < answer:
-        min = guess
+import random
+ansMax=100
+ansMin=0
+
+guessAnswer=random.randint(1,99)
+guessNum=0
+while guessNum != guessAnswer:
+    
+    print(ansMin, '< ? <',ansMax)
+    guessNum=eval(input())
+    
+    if guessNum > ansMin and guessNum < ansMax:
+        
+        if guessNum > guessAnswer:
+            print('再小一點')
+            
+            ansMax = guessNum
+        elif guessNum < guessAnswer:
+            print('再大一點')
+           
+            ansMin = guessNum
+        else:
+            print('賓果猜對了')
     else:
-        max = guess
+        print("超出範圍")
