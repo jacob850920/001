@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Oct 26 09:45:28 2020
+Created on Mon Nov  2 08:14:06 2020
 
-@author: cis-user
+@author: USER
 """
 
 import random
@@ -20,13 +20,15 @@ while guessNum != guessAnswer:
        
         if guessNum > guessAnswer:
             print('再小一點')
-            print('已猜次數',guessCount)
+            print('已猜次數',guessCount,'\n')
             ansMax = guessNum
         elif guessNum < guessAnswer:
             print('再大一點')
-            print('已猜次數',guessCount)
+            print('已猜次數',guessCount,'\n')
             ansMin = guessNum
         else:
-            print('賓果猜對了',guessCount)
+            print('賓果猜對了',guessCount,'\n')
     else:
+        
         print('超出範圍')
+        print('已猜次數',guessCount,'\n')
