@@ -1,18 +1,23 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Nov  1 23:32:54 2020
+Created on Mon Nov  2 15:36:01 2020
 
 @author: USER
 """
+print("↓請輸入一串數字(用,號隔開)↓",end='')
 list=input()
-list=list.split(',')
-list=[int(i) for i in list]
-for i in range(len(list)):
-   
-    for j in range(len(list)):
-       
-        if list[j] > list[i]:
+L=list.split(',')
+L=[int(k) for k in L]
+T = []
+while len(L) > 0:
+    
+    for i in L:
+        m= L[0]
+        if i < m:
+           m = i
+    L.remove(m)
+    T.append(m)
+                 
+
            
-            list[j], list[i] = list[i], list[j]
-print(list)
 
