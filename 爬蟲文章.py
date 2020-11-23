@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Spyder Editor
+Created on Mon Nov 23 09:23:10 2020
 
-This is a temporary script file.
+@author: cis-user
 """
+
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -51,3 +52,50 @@ print(tag_div)
 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 for a in tag_div:
     print(a.text)
+    #寫入txt
+    fp=open("text2.txt","w",encoding="utf-8")
+    fp.write(a.text)
+fp.close()
+
+
+f = open("text2.txt")
+# f = open("/Users/Administrator/Desktop/logs-160k/loss-160k/g_losses.txt")
+line = f.readline()  #讀取一行
+count = 0
+count1=0
+# print(line)
+k = open("csv","a")
+# k = open("/Users/Administrator/Desktop/logs-160k/loss-160k/g_losses_1.txt","a")
+while line:
+    count=count+1  #計算文字行數
+    # print(count)
+    if(count>21000):
+        break
+    if((count%1)==0):
+      if (float(count)<10000):
+          if (float(line)<0.1):
+            k.write(" ")
+            k.write("\n")
+      if (float(count)>10000):
+         if (float(line)<1):
+            count1=count1+1
+            line_prime=line
+            line = 0.0
+            line = str(line)
+            k.write(" ")        # 寫入空格
+            k.write("\n")       # 換行
+            print("line_prime:",line_prime)
+            print("line:",count,line)
+            print("count1:",count1)
+         elif (float(line)>8):
+            line = 0.0
+            line = str(line)
+            k.write(" ")
+            k.write("\n")
+         else:
+             k.write(line)
+      else:
+        k.write(line)
+    line = f.readline()
+    # print("line:",(line))
+f.close()
