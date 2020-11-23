@@ -53,12 +53,12 @@ print(tag_div)
 print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
 for a in tag_div:
     print(a.text)
-    #寫入txt
+    #匯出txt
     fp=open("text2.txt","w",encoding="utf-8")
     fp.write(a.text)
         
 fp.close()
-
+#匯出csv
 import pandas as pd
 df = pd.read_csv("text2.txt",delimiter="\t")
 df.to_csv("test.csv", encoding='utf-8-sig', index=False)
