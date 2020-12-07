@@ -25,7 +25,7 @@ a=time.strftime('%d' , time.localtime())
 
 
 page=0
-with open('google_search3333.csv','w+',newline='', encoding="utf-8-sig") as csvfile:   #解決多一空行 newline=''
+with open('抓五天新聞.csv','w+',newline='', encoding="utf-8-sig") as csvfile:   #解決多一空行 newline=''
     writer = csv.writer(csvfile)
     writer.writerow(('標題','時間'))
 
