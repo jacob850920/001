@@ -24,25 +24,37 @@ driver.get(url)
 now = datetime.datetime.now()
 
 
+
 page=0
 with open('抓五天新聞.csv','w+',newline='', encoding="utf-8-sig") as csvfile:   #解決多一空行 newline=''
     writer = csv.writer(csvfile)
-    writer.writerow(('標題','時間'))
+    writer.writerow(('日期','分類','連結'))
+    writer.writerow(['標題'])
+    
 
     for i in range(5):
         page+=1
         html = driver.page_source
         sp=BeautifulSoup(html,"html.parser")
-        search_h3=sp.select("div.part_list_2 > h3 > a")#標題
+        search_h3=sp.select("div.part_list_2 > h3 > a")#標題跟網址用
         search_a=sp.select("div.part_list_2 > h3 > span")#時間
+        search_b=sp.select("div.part_list_2 > h3 > em")#分類
+     
+        
+        
        
         
         for i in range(5):  #怕跑太久，每天先抓五個新聞
             print(page)
+            print(search_a[i].text,end=' ')
+            print(search_b[i].text,end=' ')
             print(search_h3[i].text,end=' ')
-            print(search_a[i].text)
+            print(search_h3[i].get('href'))
             
-            writer.writerow([search_h3[i].text,search_a[i].text])
+            
+            
+            writer.writerow([search_a[i].text,search_b[i].text,search_h3[i].get('href')])
+            writer.writerow([search_h3[i].text])
            
 
            
