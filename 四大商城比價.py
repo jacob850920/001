@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Dec 27 00:05:53 2020
+Created on Mon Dec 28 08:12:03 2020
 
-@author: USER
+@author: 90053
 """
 
 from selenium import webdriver
@@ -41,9 +41,11 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
         print(i+1)
         print(search_name[i].text,end=' ')
         print("[MOMO購物網]",end=' ')
+        a=search_price[i].text
+        c=a.replace(',', '')
         print(search_price[i].text,end=' ')
         print("https://www.momoshop.com.tw"+search_url[i].get('href'))
-        writer.writerow([search_name[i].text,"MOMO購物網",search_price[i].text,"https://www.momoshop.com.tw"+search_url[i].get('href')])
+        writer.writerow([search_name[i].text,"MOMO購物網",c,"https://www.momoshop.com.tw"+search_url[i].get('href')])
         
     print("[PChome線上購物]")
     url="https://shopping.pchome.com.tw/"
@@ -56,7 +58,7 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
     driver.find_element_by_id("keyword").clear()
     driver.find_element_by_id("keyword").send_keys(key)
     driver.find_element_by_id("doSearch").click()
-    driver.find_element_by_link_text(u"精準度").click()
+    # driver.find_element_by_link_text(u"精準度").click()
 
     time.sleep(3)
     html = driver.page_source
@@ -91,11 +93,13 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
         print(i+1)
         print(search_name[i].text,end=' ')
         print("[蝦皮商城]",end=' ')
-        print(search_price[i].text,end=' ')
+        a=search_price[i].text
+        b=a.replace('$', '')
+        c=b.replace(',', '')
         print("https://shopee.tw" + search_url[i].get('href'))
                 
             
-        writer.writerow([search_name[i].text,"蝦皮商城",search_price[i].text,"https://shopee.tw"+search_url[i].get('href')])
+        writer.writerow([search_name[i].text,"蝦皮商城",c,"https://shopee.tw"+search_url[i].get('href')])
     
     print("[YAHOO超級商城]")
     url="https://tw.search.mall.yahoo.com/search/mall/product?kw="+key+"&p=iphone12mini64g&cid=hp&clv=0"
@@ -107,15 +111,17 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
     search_price=sp.find_all("em")#價格
     search_url=sp.select("div.main> div> ul > li> a")
         
-    for i in range(len(search_name)):  
+    for i in range(len(search_price)):  
         print(i+1)
         print(search_name[i].text,end=' ')
         print("[YAHOO超級商城]",end=' ')
-        print(search_price[i].text,end=' ')
+        a=search_price[i].text
+        b=a.replace('$', '')
+        c=b.replace(',', '')
         print(search_url[i].get('href'))
                 
             
-        writer.writerow([search_name[i].text,"YAHOO超級商城",search_price[i].text,search_url[i].get('href')])
+        writer.writerow([search_name[i].text,"YAHOO超級商城",c,search_url[i].get('href')])
     driver.close()               #關閉瀏覽器
 
 sys.exit      
