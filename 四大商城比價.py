@@ -18,7 +18,7 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
     writer = csv.writer(csvfile)
     writer.writerow(('商品名','價格','網站','連結'))
     
-    key="iphone 12 mini 64g"
+    key="ps4"
     
     url="https://www.momoshop.com.tw/"
     options=webdriver.ChromeOptions()
@@ -102,7 +102,7 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
         
         search_list.append([search_name[i].text,d,"蝦皮商城","https://shopee.tw"+search_url[i].get('href')])
     print("[YAHOO超級商城]")
-    url="https://tw.search.mall.yahoo.com/search/mall/product?kw="+key+"&p=iphone12mini64g&cid=hp&clv=0"
+    url="https://tw.search.mall.yahoo.com/search/mall/product?p="+key
     driver.get(url)
     
     html = driver.page_source
@@ -121,7 +121,7 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
         print(search_url[i].get('href'))
         search_list.append([search_name[i].text,c,"蝦皮商城",search_url[i].get('href')])
        
-    search_list.sort(key=lambda s: s[1])  
+    search_list.sort(key=lambda s: int(s[1]))  
     
     for i in range(len(search_list)): 
         writer.writerow([search_list[i][0],search_list[i][1],search_list[i][2],search_list[i][3]])
