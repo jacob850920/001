@@ -22,7 +22,7 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
     options=webdriver.ChromeOptions()
     options.add_argument('--ignore-certificate-errors')
     driver=webdriver.Chrome(chrome_options=options)
-    driver.get(url)
+    # driver.get(url)
     
     driver.get("https://www.momoshop.com.tw/main/Main.jsp?mdiv=1099800000-bt_0_243_01-bt_0_243_01_e1&ctype=B")
     driver.find_element_by_id("keyword").click()
@@ -96,11 +96,11 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
         a=search_price[i].text
         b=a.replace('$', '')
         c=b.replace(',', '')
+        d=str(c).split( )[0]
         print("https://shopee.tw" + search_url[i].get('href'))
-                
-            
-        writer.writerow([search_name[i].text,"蝦皮商城",c,"https://shopee.tw"+search_url[i].get('href')])
-    
+        
+        
+        writer.writerow([search_name[i].text,"蝦皮商城",d,"https://shopee.tw"+search_url[i].get('href')])
     print("[YAHOO超級商城]")
     url="https://tw.search.mall.yahoo.com/search/mall/product?kw="+key+"&p=iphone12mini64g&cid=hp&clv=0"
     driver.get(url)
@@ -124,4 +124,4 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
         writer.writerow([search_name[i].text,"YAHOO超級商城",c,search_url[i].get('href')])
     driver.close()               #關閉瀏覽器
 
-sys.exit      
+sys.exit
