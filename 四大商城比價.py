@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Dec 28 08:12:03 2020
+Created on Mon Jan  4 10:18:08 2021
 
-@author: 90053
+@author: cis-user
 """
 
 from selenium import webdriver
@@ -98,11 +98,12 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
         b=a.replace('$', '')
         c=b.replace(',', '')
         d=str(c).split( )[0]
+        print(search_price[i].text)
         print("https://shopee.tw" + search_url[i].get('href'))
         
         search_list.append([search_name[i].text,d,"蝦皮商城","https://shopee.tw"+search_url[i].get('href')])
     print("[YAHOO超級商城]")
-    url="https://tw.search.mall.yahoo.com/search/mall/product?p="+key
+    url="https://tw.search.mall.yahoo.com/search/mall/product?kw="+key+"&p=iphone12mini64g&cid=hp&clv=0"
     driver.get(url)
     
     html = driver.page_source
@@ -118,6 +119,7 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
         a=search_price[i].text
         b=a.replace('$', '')
         c=b.replace(',', '')
+        print(search_price[i].text)
         print(search_url[i].get('href'))
         search_list.append([search_name[i].text,c,"蝦皮商城",search_url[i].get('href')])
        
@@ -132,4 +134,3 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
     driver.close()               #關閉瀏覽器
 
 sys.exit
-
