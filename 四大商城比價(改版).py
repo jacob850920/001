@@ -86,7 +86,7 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
     sp=BeautifulSoup(html,"html.parser")
     search_name=sp.select("div._1NoI8_")#商品名
     search_price=sp.find_all("div", class_="_1w9jLI _1DGuEV _7uLl65")#價格
-    search_url=sp.select("a")#網址
+    search_url=sp.select("div.col-xs-2-4 > a")#網址
         
     for i in range(len(search_name)):  
         print(i+1)
@@ -97,9 +97,9 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
         c=b.replace(',', '')
         d=str(c).split( )[0]
         print(search_price[i].text)
-        print("https://shopee.tw" + search_url[i].get('href'))
+        print("https://shopee.tw/" + search_url[i].get('href'))
         
-        search_list.append([search_name[i].text,d,"蝦皮商城","https://shopee.tw"+search_url[i].get('href')])
+        search_list.append([search_name[i].text,d,"蝦皮商城","https://shopee.tw/"+search_url[i].get('href')])
     print("[YAHOO超級商城]")
     
     
