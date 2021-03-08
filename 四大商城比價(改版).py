@@ -110,7 +110,7 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
     sp=BeautifulSoup(html,"html.parser")
     search_name=sp.find_all("span", class_="BaseGridItem__title___2HWui")#商品名
     search_price=sp.find_all("em")#價格
-    search_url=sp.find_all("a")
+    search_url=sp.select("li.BaseGridItem__grid___2wuJ7 > a")
         
     for i in range(len(search_price)):  
         print(i+1)
