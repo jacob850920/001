@@ -13,6 +13,7 @@ from selenium.webdriver.support.ui import Select
 import time,datetime
 
 search_list=[]
+list2=[]
 
 with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csvfile:   #解決多一空行 newline=''
     writer = csv.writer(csvfile)
@@ -122,11 +123,15 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
         print(search_price[i].text)
         print(search_url[i].get('href'))
         search_list.append([search_name[i].text,c,"YAHOO超級商城",search_url[i].get('href')])
-       
-    search_list.sort(key=lambda s: int(s[1]))  
     
     for i in range(len(search_list)): 
-        writer.writerow([search_list[i][0],search_list[i][1],search_list[i][2],search_list[i][3]])
+        if int(search_list[i][1]) > 10000 :
+            list2.append(search_list[i])   
+            
+    list2.sort(key=lambda s: int(s[1]))  
+    
+    for i in range(len(list2)): 
+        writer.writerow([list2[i][0],list2[i][1],list2[i][2],list2[i][3]])
     
     
                 
