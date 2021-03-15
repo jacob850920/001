@@ -13,13 +13,15 @@ from selenium.webdriver.support.ui import Select
 import time,datetime
 
 search_list=[]
-list2=[]
+limit_list=[]
 
+max_price=1000
+min_price=200
 with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csvfile:   #解決多一空行 newline=''
     writer = csv.writer(csvfile)
     writer.writerow(('商品名','價格','網站','連結'))
     
-    key="iphone12"
+    key="小米延長線"
     
     url="https://www.momoshop.com.tw/main/Main.jsp"
     options=webdriver.ChromeOptions()
@@ -34,19 +36,19 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
     time.sleep(3)
     html = driver.page_source
     sp=BeautifulSoup(html,"html.parser")
-    search_name=sp.select("div.prdInfoWrap > h3")#商品名
-    search_price=sp.select("div.prdInfoWrap > p > span > b")#價格
-    search_url=sp.select("div.listArea > ul > li > a")
+    MOMO_name=sp.select("div.prdInfoWrap > h3")#商品名
+    MOMO_price=sp.select("div.prdInfoWrap > p > span > b")#價格
+    MOMO_url=sp.select("div.listArea > ul > li > a")
     print("[MOMO購物網]")
-    for i in range(len(search_name)):  
+    for i in range(len(MOMO_name)):  
         print(i+1)
-        print(search_name[i].text,end=' ')
+        print(MOMO_name[i].text,end=' ')
         print("[MOMO購物網]",end=' ')
-        a=search_price[i].text
+        a=MOMO_price[i].text
         c=a.replace(',', '')
-        print(search_price[i].text,end=' ')
-        print("https://www.momoshop.com.tw"+search_url[i].get('href'))
-        search_list.append([search_name[i].text,c,"MOMO購物網","https://www.momoshop.com.tw"+search_url[i].get('href')])
+        print(MOMO_price[i].text,end=' ')
+        print("https://www.momoshop.com.tw"+MOMO_url[i].get('href'))
+        search_list.append([MOMO_name[i].text,c,"MOMO購物網","https://www.momoshop.com.tw"+MOMO_url[i].get('href')])
         
     print("[PChome線上購物]")
     url="https://shopping.pchome.com.tw/"
@@ -64,43 +66,43 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
     time.sleep(3)
     html = driver.page_source
     sp=BeautifulSoup(html,"html.parser")
-    search_name=sp.select("div.Cm_C > dl > dd > h5 > a ")#商品名
-    search_price=sp.select("div.Cm_C > dl > dd > ul > li > span > span")#價格
-    search_url=sp.select("div.Cm_C > dl > dd > h5 > a ")#網址
+    PChome_name=sp.select("div.Cm_C > dl > dd > h5 > a ")#商品名
+    PChome_price=sp.select("div.Cm_C > dl > dd > ul > li > span > span")#價格
+    PChome_url=sp.select("div.Cm_C > dl > dd > h5 > a ")#網址
         
-    for i in range(len(search_name)):  
+    for i in range(len(PChome_name)):  
         print(i+1)
-        print(search_name[i].text,end=' ')
+        print(PChome_name[i].text,end=' ')
         print("[PChome線上購物]",end=' ')
-        print(search_price[i].text,end=' ')
-        print("https:"+search_url[i].get('href'))
+        print(PChome_price[i].text,end=' ')
+        print("https:"+PChome_url[i].get('href'))
                 
-        search_list.append([search_name[i].text,search_price[i].text,"PChome線上購物","https:"+search_url[i].get('href')])
+        search_list.append([PChome_name[i].text,PChome_price[i].text,"PChome線上購物","https:"+PChome_url[i].get('href')])
                 
     print("[蝦皮商城]")
     url="https://shopee.tw/mall/search?keyword="+key
     driver.get(url)
 
-    time.sleep(10)
+    time.sleep(15)
     
     html = driver.page_source
     sp=BeautifulSoup(html,"html.parser")
-    search_name=sp.select("div._1NoI8_")#商品名
-    search_price=sp.find_all("div", class_="_1w9jLI _1DGuEV _7uLl65")#價格
-    search_url=sp.select("div.col-xs-2-4 > a")#網址
+    shopee_name=sp.select("div.yQmmFK")#商品名
+    shopee_price=sp.find_all("div", class_="WTFwws _1lK1eK _5W0f35")#價格
+    shopee_url=sp.select("div.col-xs-2-4 > a")#網址
         
-    for i in range(len(search_name)):  
+    for i in range(len(shopee_name)):  
         print(i+1)
-        print(search_name[i].text,end=' ')
+        print(shopee_name[i].text,end=' ')
         print("[蝦皮商城]",end=' ')
-        a=search_price[i].text
+        a=shopee_price[i].text
         b=a.replace('$', '')
         c=b.replace(',', '')
         d=str(c).split( )[0]
-        print(search_price[i].text)
-        print("https://shopee.tw/" + search_url[i].get('href'))
+        print(shopee_price[i].text)
+        print("https://shopee.tw/" + shopee_url[i].get('href'))
         
-        search_list.append([search_name[i].text,d,"蝦皮商城","https://shopee.tw/"+search_url[i].get('href')])
+        search_list.append([shopee_name[i].text,d,"蝦皮商城","https://shopee.tw/"+shopee_url[i].get('href')])
     print("[YAHOO超級商城]")
     
     
@@ -109,29 +111,29 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
     time.sleep(5)
     html = driver.page_source
     sp=BeautifulSoup(html,"html.parser")
-    search_name=sp.find_all("span", class_="BaseGridItem__title___2HWui")#商品名
-    search_price=sp.find_all("em")#價格
-    search_url=sp.select("li.BaseGridItem__grid___2wuJ7 > a")
+    YAHOO_name=sp.find_all("span", class_="BaseGridItem__title___2HWui")#商品名
+    YAHOO_price=sp.find_all("em")#價格
+    YAHOO_url=sp.select("li.BaseGridItem__grid___2wuJ7 > a")
         
-    for i in range(len(search_price)):  
+    for i in range(len(YAHOO_price)):  
         print(i+1)
-        print(search_name[i].text,end=' ')
+        print(YAHOO_name[i].text,end=' ')
         print("[YAHOO超級商城]",end=' ')
-        a=search_price[i].text
+        a=YAHOO_price[i].text
         b=a.replace('$', '')
         c=b.replace(',', '')
-        print(search_price[i].text)
-        print(search_url[i].get('href'))
-        search_list.append([search_name[i].text,c,"YAHOO超級商城",search_url[i].get('href')])
-    
+        print(YAHOO_price[i].text)
+        print(YAHOO_url[i].get('href'))
+        search_list.append([YAHOO_name[i].text,c,"YAHOO超級商城",YAHOO_url[i].get('href')])
+
     for i in range(len(search_list)): 
-        if int(search_list[i][1]) > 10000 :
-            list2.append(search_list[i])   
+        if int(search_list[i][1]) > min_price  and int(search_list[i][1]) < max_price :
+            limit_list.append(search_list[i])   
             
-    list2.sort(key=lambda s: int(s[1]))  
+    limit_list.sort(key=lambda s: int(s[1]))  
     
-    for i in range(len(list2)): 
-        writer.writerow([list2[i][0],list2[i][1],list2[i][2],list2[i][3]])
+    for i in range(len(limit_list)): 
+        writer.writerow([limit_list[i][0],limit_list[i][1],limit_list[i][2],limit_list[i][3]])
     
     
                 
