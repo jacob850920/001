@@ -11,6 +11,8 @@ from bs4 import BeautifulSoup
 import sys
 from selenium.webdriver.support.ui import Select
 import time,datetime
+import pymysql
+import re
 
 search_list=[]
 limit_list=[]
@@ -134,10 +136,58 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
     
     for i in range(len(limit_list)): 
         writer.writerow([limit_list[i][0],limit_list[i][1],limit_list[i][2],limit_list[i][3]])
-    
-    
-                
         
     driver.close()               #關閉瀏覽器
+    
 
 sys.exit
+
+db = pymysql.connect(host='163.15.24.35',port=3306,user='chenlw',passwd='abcd1234',db='mybooks',charset='utf8')              ####連線到 TQC_SRV031，記得改IP
+cursor = db.cursor()
+
+# with open('四大商城爬蟲.csv', "r", encoding="utf-8-sig") as fp2:
+with open('四大商城爬蟲.csv', "r", encoding="utf-8-sig") as fp2:    
+    message2=fp2.readlines()
+    # r2=fp2.read() 
+
+
+for k in range(2,len(message2),2):                      #正規化處裡，排除字串裡的,
+    while 1:
+        mm = re.search(",...元",message2[k])
+        if mm:
+            mm = mm.group()
+            message2[k] = message2[k].replace(mm,mm.replace(',',''))
+            print(message2[k])
+        else:
+            break
+
+# a="https://www.ettoday.net"
+# for i in range(3,len(message2),2):
+#     message2[i]=a+message2[i]
+#     message2[i-1]=message2[i-1]+','+message2[i]
+#     # print(a+i)
+
+f=limit_list
+for i in range(2,len(message2),2):
+    f.append(message2[i].split(','))
+    
+cursor.execute('select name,price,website,link from shopping')
+data = cursor.fetchall()
+
+# for row in data:
+#     print(row[0], row[1], row[2], row[3])
+    #print(row)
+
+for j in range(len(f)):
+    
+    # print(tuple(f[j][1:]) not in data)
+    if (tuple(f[j][1:]) not in data):              #新的才寫入
+        sql = '''insert into shopping (name,price,website,link)
+              values('{0}','{1}','{2}','{3}')'''
+        sql = sql.format(f[j][0],f[j][1],f[j][2],f[j][3])
+        # print(f[j])
+        cursor.execute(sql)
+        db.commit()
+
+
+db.close()
