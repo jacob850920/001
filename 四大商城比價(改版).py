@@ -127,6 +127,28 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
         print(YAHOO_price[i].text)
         print(YAHOO_url[i].get('href'))
         search_list.append([YAHOO_name[i].text,c,"YAHOO超級商城",YAHOO_url[i].get('href')])
+    
+    url="https://www.ruten.com.tw/find/?q="+key
+    driver.get(url)
+    html = driver.page_source
+    sp=BeautifulSoup(html,"html.parser")
+    ruten_name=sp.select("div.prod_info > h5 > a")#商品名
+    ruten_price=sp.find_all("div", class_="price_box about")#價格
+
+
+    for i in range(len(ruten_name)):  
+        print(i+1)
+        print(ruten_name[i].text,end=' ')
+        print("[露天拍賣]",end=' ')
+        a=ruten_price[i].text
+        b=a.replace('$', '')
+        c=b.replace(',', '')
+        d=c.replace("約", '')
+        e=str(d).split( )[0]
+        e=int(e)
+        print(e)
+        print(ruten_name[i].get('href'))
+        search_list.append([ruten_name[i].text,e,"露天拍賣網","https:"+ruten_name[i].get('href')])            
 
     for i in range(len(search_list)): 
         if int(search_list[i][1]) > min_price  and int(search_list[i][1]) < max_price :
@@ -142,52 +164,52 @@ with open('四大商城爬蟲.csv','w+',newline='', encoding="utf-8-sig") as csv
 
 sys.exit
 
-db = pymysql.connect(host='163.15.24.35',port=3306,user='chenlw',passwd='abcd1234',db='mybooks',charset='utf8')              ####連線到 TQC_SRV031，記得改IP
-cursor = db.cursor()
+# db = pymysql.connect(host='163.15.24.35',port=3306,user='chenlw',passwd='abcd1234',db='mybooks',charset='utf8')              ####連線到 TQC_SRV031，記得改IP
+# cursor = db.cursor()
 
-# with open('四大商城爬蟲.csv', "r", encoding="utf-8-sig") as fp2:
-with open('四大商城爬蟲.csv', "r", encoding="utf-8-sig") as fp2:    
-    message2=fp2.readlines()
-    # r2=fp2.read() 
+# # with open('四大商城爬蟲.csv', "r", encoding="utf-8-sig") as fp2:
+# with open('四大商城爬蟲.csv', "r", encoding="utf-8-sig") as fp2:    
+#     message2=fp2.readlines()
+#     # r2=fp2.read() 
 
 
-for k in range(2,len(message2),2):                      #正規化處裡，排除字串裡的,
-    while 1:
-        mm = re.search(",...元",message2[k])
-        if mm:
-            mm = mm.group()
-            message2[k] = message2[k].replace(mm,mm.replace(',',''))
-            print(message2[k])
-        else:
-            break
+# for k in range(2,len(message2),2):                      #正規化處裡，排除字串裡的,
+#     while 1:
+#         mm = re.search(",...元",message2[k])
+#         if mm:
+#             mm = mm.group()
+#             message2[k] = message2[k].replace(mm,mm.replace(',',''))
+#             print(message2[k])
+#         else:
+#             break
 
-# a="https://www.ettoday.net"
-# for i in range(3,len(message2),2):
-#     message2[i]=a+message2[i]
-#     message2[i-1]=message2[i-1]+','+message2[i]
-#     # print(a+i)
+# # a="https://www.ettoday.net"
+# # for i in range(3,len(message2),2):
+# #     message2[i]=a+message2[i]
+# #     message2[i-1]=message2[i-1]+','+message2[i]
+# #     # print(a+i)
 
-f=limit_list
-for i in range(2,len(message2),2):
-    f.append(message2[i].split(','))
+# f=limit_list
+# for i in range(2,len(message2),2):
+#     f.append(message2[i].split(','))
     
-cursor.execute('select name,price,website,link from shopping')
-data = cursor.fetchall()
+# cursor.execute('select name,price,website,link from shopping')
+# data = cursor.fetchall()
 
-# for row in data:
-#     print(row[0], row[1], row[2], row[3])
-    #print(row)
+# # for row in data:
+# #     print(row[0], row[1], row[2], row[3])
+#     #print(row)
 
-for j in range(len(f)):
+# for j in range(len(f)):
     
-    # print(tuple(f[j][1:]) not in data)
-    if (tuple(f[j][1:]) not in data):              #新的才寫入
-        sql = '''insert into shopping (name,price,website,link)
-              values('{0}','{1}','{2}','{3}')'''
-        sql = sql.format(f[j][0],f[j][1],f[j][2],f[j][3])
-        # print(f[j])
-        cursor.execute(sql)
-        db.commit()
+#     # print(tuple(f[j][1:]) not in data)
+#     if (tuple(f[j][1:]) not in data):              #新的才寫入
+#         sql = '''insert into shopping (name,price,website,link)
+#               values('{0}','{1}','{2}','{3}')'''
+#         sql = sql.format(f[j][0],f[j][1],f[j][2],f[j][3])
+#         # print(f[j])
+#         cursor.execute(sql)
+#         db.commit()
 
 
-db.close()
+# db.close()
